@@ -1,0 +1,24 @@
+_schema-version: '2.0'
+ID: syn-hdi-hdi-0
+version: 0.0.1
+
+modules:
+  - name: db
+    type: hdb
+    path: db
+    requires:                                        # db module needs:
+      - name: hdi-container                          # ...where synonyms are created
+        properties:
+          TARGET_CONTAINER: ~{hdi-container-service} # defined at (d1)
+          
+      - name: EPM_DEV_HDI_DB                  #...for executing grant statement
+
+resources:
+  - name: hdi-container
+    type: com.sap.xs.hdi-container
+    properties:
+      hdi-container-service: ${service-name}        # (d1) get service into variable
+
+  - name: EPM_DEV_HDI_DB
+    type: org.cloudfoundry.existing-service         # service created with xs cups
+
